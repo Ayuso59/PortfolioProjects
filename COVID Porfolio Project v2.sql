@@ -39,10 +39,10 @@ from PorfolioProject..CovidDeaths
 --where location like '%states%'
 group by population, location
 order by PercentPopulationInfected DESC
+	
 
 
 -- Showing the countries with the highest death count per population
-
 Select location, MAX(cast(total_deaths As int)) AS TotalDeathCount
 from PorfolioProject..CovidDeaths
 --where location like '%states%'
@@ -50,8 +50,9 @@ where continent is not NULL
 group by location
 order by TotalDeathCount DESC
 
+	
+	
 -- LETS BREAK THINGS DOWN BY CONTINENT
-
 
 Select location, MAX(cast(total_deaths As int)) AS TotalDeathCount
 from PorfolioProject..CovidDeaths
@@ -60,6 +61,7 @@ where continent is NULL
 group by location
 order by TotalDeathCount DESC
 
+	
 
 -- Showing the continents with the highest death count per population 
 
@@ -71,12 +73,15 @@ group by continent
 order by TotalDeathCount DESC
 
 
+	
 -- GLOBAL NUMBERS
 
 select SUM(new_cases) as total_cases, SUM(cast(new_deaths as int)) as total_deaths, SUM(cast(new_deaths as int))/SUM(new_cases)*100 as DeathPerentage
 From PorfolioProject..CovidDeaths
 Where continent is not NULL 
 order by 1, 2 
+
+	
 
 -- Looking at Total  Population vs Vaccinations
 
@@ -89,6 +94,8 @@ Join PorfolioProject..CovidVaccinations vac
 where dea.continent is not null
 order by 1,2,3
 
+	
+
 -- Using CONVERT
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
 SUM(CONVERT(int, vac.new_vaccinations)) OVER (Partition by dea.location ORDER BY dea.location, dea.date)
@@ -100,8 +107,7 @@ Join PorfolioProject..CovidVaccinations vac
 where dea.continent is not null
 order by 1,2,3
 
-
-
+	
 --Use a CTE
 
 With PopvsVac (Continent, Location, Date, population, New_vaccinations, RollingPeopleVaccinated)
@@ -118,7 +124,6 @@ where dea.continent is not null
 )
 SELECT*, (RollingPeopleVaccinated/population)*100
 FROM PopvsVac
-
 
 
 -- TEMP TABLE
@@ -146,6 +151,9 @@ where dea.continent is not null
 SELECT*, (RollingPeopleVaccinated/Population)*100
 FROM #PercentPopulationVaccinated
 
+
+
+	
 --Creating View to Store Data for Later Visualizations 
 
 Create View PercentPopulationVaccinated as
