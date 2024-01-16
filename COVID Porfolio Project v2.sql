@@ -43,6 +43,7 @@ order by PercentPopulationInfected DESC
 
 
 -- Showing the countries with the highest death count per population
+	
 Select location, MAX(cast(total_deaths As int)) AS TotalDeathCount
 from PorfolioProject..CovidDeaths
 --where location like '%states%'
@@ -52,8 +53,8 @@ order by TotalDeathCount DESC
 
 	
 	
--- LETS BREAK THINGS DOWN BY CONTINENT
-
+--  Breaking numbers down by continent 
+	
 Select location, MAX(cast(total_deaths As int)) AS TotalDeathCount
 from PorfolioProject..CovidDeaths
 --where location like '%states%'
@@ -97,6 +98,7 @@ order by 1,2,3
 	
 
 -- Using CONVERT
+	
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
 SUM(CONVERT(int, vac.new_vaccinations)) OVER (Partition by dea.location ORDER BY dea.location, dea.date)
 AS RollingPeopleVaccinated
